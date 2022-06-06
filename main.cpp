@@ -15,20 +15,15 @@ int main(int argc, char* args[])
 	{
 		return ERROR_INVALID_PARAMETER;
 	}
-	std::string_view input = args[1];
-
-	std::ifstream in(input);
+	std::ifstream in(args[1]);
 	if (!in.is_open())
 	{
-		std::cerr << "Error: can not create a input file " << input << "\n";
 		return ERROR_FILE_NOT_FOUND;
 	};
 
-	std::string_view output = args[2];
-	std::ofstream out(output);
+	std::ofstream out(args[2]);
 	if (!out.is_open() || !out.good())
 	{
-		std::cerr << "Error: can not create a output file " << output << "\n";
 		return ERROR_FILE_EXISTS;
 	}
 
