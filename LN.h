@@ -3,7 +3,9 @@
 #include "util.h"
 
 #include <iostream>
+#include <limits>
 #include <string>
+#include <utility>
 
 class LN
 {
@@ -22,7 +24,7 @@ class LN
 	static LN abs(const LN& ln) { return ln < 0 ? -ln : ln; }
 	static LN abs(LN& ln) { return ln < 0 ? -ln : ln; }
 	static void remove_leading_zero(std::string& str);
-	std::pair<LN, LN> divide(const LN& dividend, const LN& divisor) const;
+	std::pair< LN, LN > divide(const LN& dividend, const LN& divisor) const;
 
   public:
 	LN operator++(int);
@@ -32,7 +34,10 @@ class LN
 	LN(std::string number, char sign, bool NaNless) :
 		number{ number }, sign{ sign }, isNan{ NaNless } {}							 // copy constructor
 	LN(const LN& ln) : number{ ln.number }, sign{ ln.sign }, isNan{ ln.isNan } {}	 // copy constructor
-	explicit LN(const long long& ll = 0) : number{ std::to_string(std::abs(ll)) }, sign{ ll < 0 ? '-' : '+' }, isNan{false} {}
+	explicit LN(const long long& ll = 0) :
+		number{ std::to_string(std::abs(ll)) }, sign{ ll < 0 ? '-' : '+' }, isNan{ false }
+	{
+	}
 	explicit LN(const std::string_view& sv);
 	LN(const std::string& s);
 	explicit LN(const char* cstring) : LN{ std::string(cstring) } {}

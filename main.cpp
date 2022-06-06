@@ -6,7 +6,8 @@
 #include <iostream>
 #include <string>
 #include <utility>
-#include <vector>
+#include <stack>
+#include <functional>
 
 int main(int argc, char* args[])
 {
