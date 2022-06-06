@@ -3,11 +3,11 @@
 #include <unordered_map>
 
 #include <fstream>
+#include <functional>
 #include <iostream>
+#include <stack>
 #include <string>
 #include <utility>
-#include <stack>
-#include <functional>
 
 int main(int argc, char* args[])
 {

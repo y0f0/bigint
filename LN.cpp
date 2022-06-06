@@ -50,10 +50,7 @@ LN& LN::operator=(LN&& tmp) noexcept	// assignment move
 
 LN::LN(const std::string_view& sv) : LN{ std::string(sv.begin(), sv.end()) }
 {
-	if (sv == "NaN")
-	{
-		isNan = true;
-	}
+	isNan = sv == "NaN";
 }
 
 LN::LN(const std::string& s)
@@ -114,7 +111,7 @@ LN LN::operator+(const LN& ln) const
 LN LN::operator-(const LN& ln) const
 {
 	LN copy(ln);
-	copy.sign = copy.sign == this->sign ? '+' : '-';
+	copy.sign = copy.sign == '-' ? '+' : '-';
 	return (*this) + copy;
 }
 
@@ -197,7 +194,8 @@ LN LN::operator/(const LN& num) const
 				part_total = p.second;
 				result.number = result.number + part_total.number;
 			}
-			if (count > 3) {
+			if (count > 3)
+			{
 				break;
 			}
 		}
