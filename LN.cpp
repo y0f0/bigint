@@ -23,13 +23,12 @@ std::pair< LN, LN > LN::divide(const LN& numerator, const LN& denominator) const
 		integrate_part = integrate_part + LN(1LL);
 		copy = copy + denominator;
 	}
-	LN remainder_part;
+	LN remainder_part = LN(0LL);
 	if (copy > numerator)
 	{
-		integrate_part = integrate_part - LN(1LL);
+		integrate_part = (integrate_part - LN(1LL));
 		remainder_part = numerator - (copy - denominator);
 	}
-
 	return std::make_tuple(integrate_part, remainder_part);
 }
 
@@ -43,8 +42,7 @@ LN& LN::operator=(const LN& other)	  // assignment copy
 LN& LN::operator=(LN&& tmp) noexcept	// assignment move
 {
 	sign = tmp.sign;
-	number = tmp.number;
-	tmp.number.clear();
+	number = std::move(tmp.number);
 	return *this;
 }
 
@@ -111,7 +109,7 @@ LN LN::operator+(const LN& ln) const
 LN LN::operator-(const LN& ln) const
 {
 	LN copy(ln);
-	copy.sign = copy.sign == '-' ? '+' : '-';
+	copy.sign = (copy.sign == '-') ? '+' : '-';
 	return (*this) + copy;
 }
 
@@ -143,7 +141,7 @@ LN LN::operator/(const LN& num) const
 	if (num == LN(1LL))
 		return *this;
 	if (num == LN(-1LL))
-		return -(*this);
+		return LN(-1LL) * (*this);
 
 	LN result;
 	if (numerator <= LN(LLONG_MAX) and denominator <= LN(LLONG_MAX))
@@ -190,13 +188,9 @@ LN LN::operator/(const LN& num) const
 			{
 				remove_leading_zero(part.number);
 				auto p = divide(part, denominator);
-				remainder = p.first;
-				part_total = p.second;
+				part_total = p.first;
+				remainder = p.second;
 				result.number = result.number + part_total.number;
-			}
-			if (count > 3)
-			{
-				break;
 			}
 		}
 	}
@@ -259,23 +253,9 @@ bool LN::operator<(const LN& ln) const
 			}
 			return number.length() < ln.number.length();
 		}
-		return -(*this) > -ln;
+		return LN(-1LL) * (*this) > LN(-1LL) * ln;
 	}
 	return sign == '-';
-}
-
-LN LN::operator-() const
-{
-	LN res(number);
-	if (number != "0")
-	{
-		if (sign == '+')
-			res.sign = '-';
-		else
-			res.sign = '+';
-	}
-
-	return res;
 }
 
 LN LN::operator~() const
@@ -302,7 +282,6 @@ LN LN::operator~() const
 		root = (x + (*this / x)) / LN(2LL);
 		LN diff = root - x;
 		LN absolut = abs(diff);
-		bool b = absolut < LN(1LL);
 		if (absolut < LN(1LL))
 		{
 			break;

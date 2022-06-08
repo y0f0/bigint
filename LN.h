@@ -21,8 +21,8 @@ class LN
 	static LN MINUS_ONE() { return LN(-1LL); }
 	static LN NaN() { return LN("NaN", '+', true); }
 
-	static LN abs(const LN& ln) { return ln < 0 ? -ln : ln; }
-	static LN abs(LN& ln) { return ln < 0 ? -ln : ln; }
+	static LN abs(const LN& ln) { return ln < 0 ? LN(-1LL) * ln : ln; }
+	static LN abs(LN& ln) { return ln < 0 ? LN(-1LL) * ln : ln; }
 	static void remove_leading_zero(std::string& str);
 	std::pair< LN, LN > divide(const LN& dividend, const LN& divisor) const;
 
@@ -41,9 +41,11 @@ class LN
 	explicit LN(const std::string_view& sv);
 	LN(const std::string& s);
 	explicit LN(const char* cstring) : LN{ std::string(cstring) } {}
-	LN(LN&& ln) : number{ ln.number }, sign{ ln.sign }, isNan{ ln.isNan } {}	// move constructor
-	LN& operator=(const LN&);													// assignment copy
-	LN& operator=(LN&& tmp) noexcept;											// assignment move
+	LN(LN&& ln) : number(std::move(ln.number)), sign(ln.sign), isNan(ln.isNan)
+	{
+	}									 // move constructor
+	LN& operator=(const LN&);			 // assignment copy
+	LN& operator=(LN&& tmp) noexcept;	 // assignment move
 
 	LN operator+(const LN&) const;
 	LN operator-(const LN&) const;
@@ -67,7 +69,6 @@ class LN
 	bool operator<(const long long& ll) const { return *this < LN(ll); }
 	bool operator<=(const long long& ll) const { return !(*this > LN(ll)); }
 
-	LN operator-() const;
 	LN operator~() const;
 
 	explicit operator long long() const;
