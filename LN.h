@@ -41,11 +41,9 @@ class LN
 	explicit LN(const std::string_view& sv);
 	LN(const std::string& s);
 	explicit LN(const char* cstring) : LN{ std::string(cstring) } {}
-	LN(LN&& ln) : number(std::move(ln.number)), sign(ln.sign), isNan(ln.isNan)
-	{
-	}									 // move constructor
-	LN& operator=(const LN&);			 // assignment copy
-	LN& operator=(LN&& tmp) noexcept;	 // assignment move
+	LN(LN&& ln) : number(std::move(ln.number)), sign(ln.sign), isNan(ln.isNan) {}	 // move constructor
+	LN& operator=(const LN&);														 // assignment copy
+	LN& operator=(LN&& tmp) noexcept;												 // assignment move
 
 	LN operator+(const LN&) const;
 	LN operator-(const LN&) const;
