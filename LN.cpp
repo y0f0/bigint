@@ -29,7 +29,7 @@ std::pair< LN, LN > LN::divide(const LN& numerator, const LN& denominator) const
 		integrate_part = (integrate_part - LN(1LL));
 		remainder_part = numerator - (copy - denominator);
 	}
-	return std::make_tuple(integrate_part, remainder_part);
+	return std::make_pair(integrate_part, remainder_part);
 }
 
 LN& LN::operator=(const LN& other)	  // assignment copy
