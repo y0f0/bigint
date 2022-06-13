@@ -288,6 +288,15 @@ std::ostream& operator<<(std::ostream& out, const LN& ln)
 	return out;
 }
 
+LN operator"" _ln(unsigned long long x)
+{
+	if (x > LLONG_MAX)
+	{
+		throw "Error: cannot cast to long long.";
+	}
+	return LN(x);
+}
+
 LN::operator long long() const
 {
 	try

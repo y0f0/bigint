@@ -31,8 +31,8 @@ class LN
 	LN& operator--();
 	LN operator--(int);
 
-	LN(std::string number, char sign, bool NaNless) :
-		number{ number }, sign{ sign }, isNan{ NaNless } {}							 // copy constructor
+	LN(std::string number, char sign, bool naNable) :
+		number{ number }, sign{ sign }, isNan{ naNable } {}							 // copy constructor
 	LN(const LN& ln) : number{ ln.number }, sign{ ln.sign }, isNan{ ln.isNan } {}	 // copy constructor
 	explicit LN(const long long& ll = 0) :
 		number{ std::to_string(std::abs(ll)) }, sign{ ll < 0 ? '-' : '+' }, isNan{ false }
@@ -74,5 +74,6 @@ class LN
 
 	friend std::ostream& operator<<(std::ostream&, const LN&);
 
-	friend LN operator"" _ln(unsigned long long x) { return LN(x); }
 };
+
+LN operator"" _ln(unsigned long long x);
