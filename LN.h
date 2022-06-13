@@ -51,11 +51,11 @@ class LN
 	LN operator/(const LN&) const;
 	LN operator%(const LN&) const;
 
-	LN& operator+=(const LN& ln);
-	LN& operator-=(const LN& ln);
-	LN& operator*=(const LN& ln);
-	LN& operator/=(const LN& ln);
-	LN& operator%=(const LN& ln);
+	LN operator+=(const LN& ln);
+	LN operator-=(const LN& ln);
+	LN operator*=(const LN& ln);
+	LN operator/=(const LN& ln);
+	LN operator%=(const LN& ln);
 
 	bool operator<(const LN&) const;
 	bool operator<=(const LN& ln) const { return !anyIsNaN(*this, ln) && (*this == ln || *this < ln); }

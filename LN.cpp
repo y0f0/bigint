@@ -309,57 +309,51 @@ LN::operator long long() const
 	}
 }
 
-// TODO: duplicates
-LN& LN::operator%=(const LN& ln)
+LN LN::operator%=(const LN& ln)
 {
 	if (anyIsNaN(*this, ln))
 	{
-		LN NaN = LN("NaN", '+', true);
-		return NaN;
+		return LN::NaN();
 	}
 	*this = *this % ln;
 
 	return *this;
 }
-LN& LN::operator/=(const LN& ln)
+LN LN::operator/=(const LN& ln)
 {
 	if (anyIsNaN(*this, ln))
 	{
-		LN NaN = LN("NaN", '+', true);
-		return NaN;
+		return LN::NaN();
 	}
 	*this = *this / ln;
 
 	return *this;
 }
-LN& LN::operator*=(const LN& ln)
+LN LN::operator*=(const LN& ln)
 {
 	if (anyIsNaN(*this, ln))
 	{
-		LN NaN = LN("NaN", '+', true);
-		return NaN;
+		return LN::NaN();
 	}
 	*this = *this * ln;
 
 	return *this;
 }
-LN& LN::operator-=(const LN& ln)
+LN LN::operator-=(const LN& ln)
 {
 	if (anyIsNaN(*this, ln))
 	{
-		LN NaN = LN("NaN", '+', true);
-		return NaN;
+		return LN::NaN();
 	}
 	*this = *this - ln;
 
 	return *this;
 }
-LN& LN::operator+=(const LN& ln)
+LN LN::operator+=(const LN& ln)
 {
 	if (anyIsNaN(*this, ln))
 	{
-		LN NaN = LN("NaN", '+', true);
-		return NaN;
+		return LN::NaN();
 	}
 	*this = *this + ln;
 
