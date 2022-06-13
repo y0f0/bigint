@@ -104,8 +104,10 @@ LN LN::operator+(const LN& ln) const
 			result.number = util::subtract(ln.number, number);
 		}
 	}
-	if (result.number == "0")	 // -0
+	if (result.number == "0")
+	{	 // -0.in
 		result.sign = '+';
+	}
 
 	return result;
 }
@@ -214,43 +216,12 @@ LN LN::operator/(const LN& num) const
 
 LN LN::operator%(const LN& num) const
 {
-	LN numerator = abs(*this);
-	LN denominator = abs(num);
-
-	if (denominator == LN(0LL))
+	if (this->isNan || num.isNan)
 	{
 		return NaN();
 	}
-	if (denominator == LN(1LL) || denominator == numerator)
-		return LN(0LL);
-
-	LN result;
-	if (numerator <= LN(LLONG_MAX) && denominator <= LN(LLONG_MAX))
-	{
-		long long remainderLL = std::stoll(numerator.number) % std::stoll(denominator.number);
-		result = LN(remainderLL);
-	}
-	else if (numerator < denominator)
-	{
-		result = numerator;
-	}
-	else if (util::is_10_degree(num.number))
-	{
-		result.number = numerator.number.substr(numerator.number.size() - num.number.size() - 1);
-	}
-	else
-	{
-		LN integrate_part = numerator / denominator;
-		LN x = integrate_part * denominator;
-		result = numerator - x;
-	}
-	remove_leading_zero(result.number);
-
-	result.sign = this->sign;
-	if (result.number == "0")
-		result.sign = '+';
-
-	return result;
+	// n - (n // m) * m
+	return *this - ((*this / num) * num);
 }
 
 bool LN::operator<(const LN& ln) const
@@ -276,7 +247,7 @@ bool LN::operator<(const LN& ln) const
 
 LN LN::operator~() const
 {
-	if (*this < 0)
+	if (this->isNan || *this < 0)
 	{
 		return NaN();
 	}
