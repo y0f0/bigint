@@ -1,4 +1,5 @@
 #include "LN.h"
+#include <climits>
 
 void LN::remove_leading_zero(std::string& str)	  // should be in util, but didn't work
 {
