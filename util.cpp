@@ -72,7 +72,7 @@ std::string util::add(std::string first, std::string second)
 		first.insert(0, diff, '0');
 	}
 
-	for (int i = static_cast< char >(first.size()) - 1; i >= 0; --i)
+	for (int i = static_cast< int >(first.size()) - 1; i >= 0; --i)
 	{
 		res[i] = static_cast< char >((transfer - '0') + (first[i] - '0') + (second[i] - '0')) + '0';
 
