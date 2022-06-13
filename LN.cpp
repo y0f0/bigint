@@ -81,6 +81,10 @@ LN::LN(const std::string& s)
 
 LN LN::operator+(const LN& ln) const
 {
+	if (ln.isNan || this->isNan)
+	{
+		return NaN();
+	}
 	LN result;
 	if (sign == ln.sign)
 	{
@@ -115,6 +119,10 @@ LN LN::operator-(const LN& ln) const
 
 LN LN::operator*(const LN& ln) const
 {
+	if (this->isNan || ln.isNan)
+	{
+		return NaN();
+	}
 	LN mul;
 	mul.number = util::multiply(number, ln.number);
 	mul.sign = ln.sign == this->sign ? '+' : '-';
@@ -129,6 +137,10 @@ LN LN::operator*(const LN& ln) const
 
 LN LN::operator/(const LN& num) const
 {
+	if (this->isNan || num.isNan)
+	{
+		return NaN();
+	}
 	LN numerator = abs(*this);
 	LN denominator = abs(num);
 
@@ -243,6 +255,10 @@ LN LN::operator%(const LN& num) const
 
 bool LN::operator<(const LN& ln) const
 {
+	if (this->isNan || ln.isNan)
+	{
+		return false;
+	}
 	if (ln.sign == sign)
 	{
 		if (sign == '+')
