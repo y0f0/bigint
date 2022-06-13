@@ -73,7 +73,6 @@ class LN
 	explicit operator bool() const { return *this != ZERO(); }
 
 	friend std::ostream& operator<<(std::ostream&, const LN&);
-
 };
 
 LN operator"" _ln(unsigned long long x);
