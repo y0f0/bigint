@@ -5,7 +5,7 @@
 #include <climits>
 #include <new>
 
-void LN::remove_leading_zero(MyString& str)	 // should be in util, but didn't work
+void LN::remove_leading_zero(MyString& str)	   // should be in util, but didn't work
 {
 	size_t i;
 	for (i = 0; i < str.size(); i++)
