@@ -1,8 +1,11 @@
 #include "LN.h"
 
-#include <climits>
+#include "String.h"
 
-void LN::remove_leading_zero(std::string& str)	  // should be in util, but didn't work
+#include <climits>
+#include <stdexcept>
+
+void LN::remove_leading_zero(String& str)	 // should be in util, but didn't work
 {
 	size_t i;
 	for (i = 0; i < str.size(); i++)
@@ -10,12 +13,16 @@ void LN::remove_leading_zero(std::string& str)	  // should be in util, but didn'
 			break;
 
 	if (i == str.size())
-		str = "0";
+	{
+		str = String("0");
+	}
 	else
+	{
 		str = str.substr(i);
+	}
 }
 
-std::pair< LN, LN > LN::divide(const LN& numerator, const LN& denominator) const
+util::pair< LN, LN > LN::divide(const LN& numerator, const LN& denominator)
 {
 	LN copy = denominator;
 	LN integrate_part = LN(1LL);
@@ -31,7 +38,7 @@ std::pair< LN, LN > LN::divide(const LN& numerator, const LN& denominator) const
 		integrate_part = (integrate_part - LN(1LL));
 		remainder_part = numerator - (copy - denominator);
 	}
-	return std::make_pair(integrate_part, remainder_part);
+	return { integrate_part, remainder_part };
 }
 
 LN& LN::operator=(const LN& other)	  // assignment copy
@@ -48,12 +55,12 @@ LN& LN::operator=(LN&& tmp) noexcept	// assignment move
 	return *this;
 }
 
-LN::LN(const std::string_view& sv) : LN{ std::string(sv.begin(), sv.end()) }
+LN::LN(const std::string_view& sv) : LN{ String(sv.data()) }
 {
 	isNan = sv == "NaN";
 }
 
-LN::LN(const std::string& s)
+LN::LN(const String& s)
 {
 	if (s == "NaN")
 	{
@@ -71,14 +78,18 @@ LN::LN(const std::string& s)
 		sign = '+';
 	}
 	size_t i;
-	for (i = 0; i < number.size(); i++)
+	for (i = 0; i < number.length(); i++)
 		if (number[i] != '0')
 			break;
 
-	if (i == s.size())
-		number = "0";
+	if (i == s.length())
+	{
+		number = String("0");
+	}
 	else
+	{
 		number = number.substr(i);
+	}
 }
 
 LN LN::operator+(const LN& ln) const
@@ -162,7 +173,7 @@ LN LN::operator/(const LN& num) const
 	LN result;
 	if (numerator <= LN(LLONG_MAX) and denominator <= LN(LLONG_MAX))
 	{
-		long long quotientLL = std::stoll(numerator.number) / std::stoll(denominator.number);
+		long long quotientLL = stoll(numerator.number) / stoll(denominator.number);
 		result = LN(quotientLL);
 	}
 	else if (numerator == denominator)
@@ -175,18 +186,19 @@ LN LN::operator/(const LN& num) const
 	}
 	else
 	{
-		result.number = "";
+		result.number = String("");
 		LN part, part_total, remainder;
 		size_t count = 0;
 		remainder.number = numerator.number.substr(count, denominator.number.size() - 1);
 		count = denominator.number.size() - 1;
 		while (count < numerator.number.size())
 		{
-			part.number = remainder.number.append(1, numerator.number[count]);
+			remainder.number.append(1, numerator.number[count]);
+			part.number = remainder.number;
 			count++;
 			while (part < denominator)
 			{
-				result.number += "0";
+				result.number += String("0");
 				if (count < numerator.number.size())
 				{
 					part.number.append(1, numerator.number[count]);
@@ -197,7 +209,7 @@ LN LN::operator/(const LN& num) const
 			}
 			if (part == denominator)
 			{
-				result.number += "1";
+				result.number += String("1");
 				remainder = LN(0LL);
 			}
 			else if (part > denominator)
@@ -294,7 +306,7 @@ LN operator"" _ln(unsigned long long x)
 {
 	if (x > LLONG_MAX)
 	{
-		throw "Error: cannot cast to long long.";
+		throw std::runtime_error("Error: cannot cast to long long.");
 	}
 	return LN(x);
 }
@@ -303,10 +315,10 @@ LN::operator long long() const
 {
 	try
 	{
-		return std::stoll(this->number);
+		return stoll(this->number);
 	} catch (std::bad_alloc const &)
 	{
-		throw "Error: not enough memory for conversation to long long";
+		throw std::runtime_error("Error: not enough memory for conversation to long long");
 	}
 }
 
