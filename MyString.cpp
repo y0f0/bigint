@@ -254,9 +254,11 @@ bool operator!=(const char *lhs, const MyString &rhs)
 long long stoll(MyString &string)
 {
 	long long res = 0;
-	for (int i = string.capacity_; i >= 0; i--)
+	long long power = 1;
+	for (int i = string.length() - 1; i >= 0; i--)
 	{
-		res += 10 * (string[i] - '0');
+		res += power * (string[i] - '0');
+		power *= 10;
 	}
 	return res;
 }

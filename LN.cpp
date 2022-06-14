@@ -25,17 +25,17 @@ void LN::remove_leading_zero(MyString& str)	   // should be in util, but didn't 
 util::pair< LN, LN > LN::divide(const LN& numerator, const LN& denominator)
 {
 	LN copy = denominator;
-	LN integrate_part = LN(1LL);
+	LN integrate_part = ONE();
 
 	while (copy < numerator)
 	{
-		integrate_part = integrate_part + LN(1LL);
+		integrate_part = integrate_part + ONE();
 		copy = copy + denominator;
 	}
-	LN remainder_part = LN(0LL);
+	LN remainder_part = ZERO();
 	if (copy > numerator)
 	{
-		integrate_part = (integrate_part - LN(1LL));
+		integrate_part = (integrate_part - ONE());
 		remainder_part = numerator - (copy - denominator);
 	}
 	return { integrate_part, remainder_part };
@@ -159,16 +159,16 @@ LN LN::operator/(const LN& num) const
 	LN numerator = abs(*this);
 	LN denominator = abs(num);
 
-	if (num == LN(0LL))
+	if (num == ZERO())
 	{
 		return NaN();
 	}
 	if (numerator < denominator)
-		return LN(0LL);
-	if (num == LN(1LL))
+		return ZERO();
+	if (num == ONE())
 		return *this;
-	if (num == LN(-1LL))
-		return LN(-1LL) * (*this);
+	if (num == MINUS_ONE())
+		return MINUS_ONE() * (*this);
 
 	LN result;
 	if (numerator <= LN(LLONG_MAX) and denominator <= LN(LLONG_MAX))
@@ -178,7 +178,7 @@ LN LN::operator/(const LN& num) const
 	}
 	else if (numerator == denominator)
 	{
-		result = LN(1LL);
+		result = ONE();
 	}
 	else if (util::is_10_degree(denominator.number))	// 10's optimizers
 	{
@@ -210,7 +210,7 @@ LN LN::operator/(const LN& num) const
 			if (part == denominator)
 			{
 				result.number += MyString("1");
-				remainder = LN(0LL);
+				remainder = ZERO();
 			}
 			else if (part > denominator)
 			{
@@ -234,7 +234,6 @@ LN LN::operator%(const LN& num) const
 	{
 		return NaN();
 	}
-	// n - (n // m) * m
 	return *this - ((*this / num) * num);
 }
 
@@ -254,21 +253,21 @@ LN LN::operator~() const
 	else if (*this < 16)
 		return LN(3LL);
 
-	LN x = *this;
-	LN root = ZERO();
+	LN left = ZERO();
+	LN middle;
+	LN right = *this + ONE();
 
-	while (true)
+	while (left != right - ONE())
 	{
-		root = (x + (*this / x)) / LN(2LL);
-		LN diff = root - x;
-		LN absolut = abs(diff);
-		if (absolut < LN(1LL))
-		{
-			break;
-		}
-		x = root;
+		middle = (left + right) / LN(2LL);
+
+		if (middle * middle <= *this)
+			left = middle;
+		else
+			right = middle;
 	}
-	return root;
+
+	return left;
 }
 
 std::ostream& operator<<(std::ostream& out, const LN& ln)
@@ -358,7 +357,7 @@ LN LN::operator++(int)
 		return *this;
 	}
 
-	LN temp = *this + LN(1LL);
+	LN temp = *this + ONE();
 
 	return temp;
 }
@@ -368,7 +367,7 @@ LN& LN::operator--()
 	{
 		return *this;
 	}
-	*this -= LN(1LL);
+	*this -= ONE();
 
 	return *this;
 }
@@ -379,7 +378,7 @@ LN LN::operator--(int)
 		return *this;
 	}
 	LN temp = *this;
-	*this -= LN(1LL);
+	*this -= ONE();
 
 	return temp;
 }
@@ -400,7 +399,7 @@ int comparing(const LN& lhs, const LN& rhs)
 			}
 			return lhs.number.length() < rhs.number.length() ? -1 : 1;
 		}
-		return LN(-1LL) * lhs > LN(-1LL) * rhs ? -1 : 1;
+		return LN::MINUS_ONE() * lhs > LN::MINUS_ONE() * rhs ? -1 : 1;
 	}
 	return lhs.sign == '-' ? -1 : 1;
 }
