@@ -5,7 +5,7 @@
 
 #include <iostream>
 #include <limits>
-#include <stdexcept>
+#include <new>
 
 class LN
 {

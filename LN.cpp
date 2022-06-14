@@ -3,7 +3,7 @@
 #include "String.h"
 
 #include <climits>
-#include <stdexcept>
+#include <new>
 
 void LN::remove_leading_zero(String& str)	 // should be in util, but didn't work
 {
@@ -306,7 +306,7 @@ LN operator"" _ln(unsigned long long x)
 {
 	if (x > LLONG_MAX)
 	{
-		throw std::runtime_error("Error: cannot cast to long long.");
+		throw std::bad_alloc();
 	}
 	return LN(x);
 }
@@ -316,9 +316,9 @@ LN::operator long long() const
 	try
 	{
 		return stoll(this->number);
-	} catch (std::bad_alloc const &)
+	} catch (...)
 	{
-		throw std::runtime_error("Error: not enough memory for conversation to long long");
+		throw std::bad_alloc();
 	}
 }
 
