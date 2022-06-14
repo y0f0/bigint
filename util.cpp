@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-bool util::is_10_degree(const String& str)
+bool util::is_10_degree(const MyString& str)
 {
 	if (str[0] != '1')
 		return false;
@@ -13,17 +13,17 @@ bool util::is_10_degree(const String& str)
 	return true;
 }
 
-String util::multiply(String first, String second)
+MyString util::multiply(MyString first, MyString second)
 {
 	if (first.length() > second.length())
 	{
 		std::swap(first, second);
 	}
 
-	String res("0");
+	MyString res("0");
 	for (int i = static_cast< int >(first.length()) - 1; i >= 0; --i)
 	{
-		String copy = second;
+		MyString copy = second;
 		int digit = first[i] - '0';
 		int transfer = 0;
 
@@ -60,9 +60,9 @@ String util::multiply(String first, String second)
 	return res;
 }
 
-String util::add(String first, String second)
+MyString util::add(MyString first, MyString second)
 {
-	String res = (first.length() > second.length()) ? first : second;
+	MyString res = (first.length() > second.length()) ? first : second;
 	char transfer = '0';
 	int diff = std::abs((int)(first.size() - second.size()));
 
@@ -106,9 +106,9 @@ String util::add(String first, String second)
 	return res;
 }
 
-String util::subtract(String first, String second)
+MyString util::subtract(MyString first, MyString second)
 {
-	String res = (first.length() > second.length()) ? first : second;
+	MyString res = (first.length() > second.length()) ? first : second;
 	int diff = std::abs((int)(first.size() - second.size()));
 
 	if (first.size() > second.size())
@@ -144,13 +144,13 @@ String util::subtract(String first, String second)
 	return res;
 }
 
-String util::to_String(long long n)
+MyString util::to_String(long long n)
 {
 	if (n == 0)
 	{
-		return String("0");
+		return MyString("0");
 	}
-	String res;
+	MyString res;
 	while (n)
 	{
 		res.push_back(char(n % 10 + '0'));

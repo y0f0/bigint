@@ -1,16 +1,17 @@
-#include "String.h"
+#include "MyString.h"
 
-#include <algorithm>
+#include <cstddef>
 #include <cstring>
+#include <fstream>
 #include <stdexcept>
 
-String::String() : size_(1), capacity_(1)
+MyString::MyString() : size_(1), capacity_(1)
 {
 	data_ = new char[1];
 	data_[0] = '\0';
 }
 
-String::String(const char *cstr) : String()
+MyString::MyString(const char *cstr) : MyString()
 {
 	for (int i = 0; cstr[i] != '\0'; i++)
 	{
@@ -18,7 +19,7 @@ String::String(const char *cstr) : String()
 	}
 }
 
-String::String(int count, char ch) : size_(count + 1), capacity_(size_ * 2)
+MyString::MyString(int count, char ch) : size_(count + 1), capacity_(size_ * 2)
 {
 	data_ = new char[capacity_];
 	while (count--)
@@ -28,14 +29,14 @@ String::String(int count, char ch) : size_(count + 1), capacity_(size_ * 2)
 	data_[size_ - 1] = '\0';
 }
 
-String::String(const String &string) : size_(string.size_), capacity_(string.capacity_)
+MyString::MyString(const MyString &string) : size_(string.size_), capacity_(string.capacity_)
 {
 	data_ = new char[capacity_];
 	strncpy(data_, string.data_, string.size_);
 	data_[size_ - 1] = '\0';
 }
 
-String::String(String &&string) noexcept : size_(string.size_), capacity_(string.capacity_), data_(string.data_)
+MyString::MyString(MyString &&string) noexcept : size_(string.size_), capacity_(string.capacity_), data_(string.data_)
 {
 	string.data_ = new char[1];
 	string[0] = '\0';
@@ -43,7 +44,7 @@ String::String(String &&string) noexcept : size_(string.size_), capacity_(string
 	string.capacity_ = 1;
 }
 
-String &String::operator=(const String &string)
+MyString &MyString::operator=(const MyString &string)
 {
 	if (this->data_ == string.data_)
 	{
@@ -57,7 +58,7 @@ String &String::operator=(const String &string)
 	return *this;
 }
 
-String &String::operator=(String &string)
+MyString &MyString::operator=(MyString &string)
 {
 	if (this->data_ == string.data_)
 	{
@@ -71,7 +72,7 @@ String &String::operator=(String &string)
 	return *this;
 }
 
-String &String::operator=(String &&string) noexcept
+MyString &MyString::operator=(MyString &&string) noexcept
 {
 	if (this->data_ == string.data_)
 	{
@@ -88,27 +89,27 @@ String &String::operator=(String &&string) noexcept
 	return *this;
 }
 
-String::~String()
+MyString::~MyString()
 {
 	delete[] data_;
 }
 
-int String::length() const
+int MyString::length() const
 {
 	return size_ - 1;
 }
 
-char &String::operator[](int i)
+char &MyString::operator[](int i)
 {
 	return data_[i];
 }
 
-const char &String::operator[](int i) const
+const char &MyString::operator[](int i) const
 {
 	return data_[i];
 }
 
-void String::reserve(int capacity)
+void MyString::reserve(int capacity)
 {
 	if (this->capacity_ >= capacity)
 	{
@@ -122,7 +123,7 @@ void String::reserve(int capacity)
 	delete[] new_str;
 }
 
-void String::push_back(char ch)
+void MyString::push_back(char ch)
 {
 	reserve(size_ + 1);
 	size_++;
@@ -130,7 +131,7 @@ void String::push_back(char ch)
 	data_[size_ - 1] = '\0';
 }
 
-void String::insert(int index, const String &string)
+void MyString::insert(int index, const MyString &string)
 {
 	reserve(size_ + string.length());
 	for (int i = size_ - 2; i >= index; i--)
@@ -145,15 +146,15 @@ void String::insert(int index, const String &string)
 	data_[size_ - 1] = '\0';
 }
 
-void String::insert(int index, const char *cstr)
+void MyString::insert(int index, const char *cstr)
 {
-	String in_str(cstr);
+	MyString in_str(cstr);
 	in_str.size_ = 2;
 	in_str.data_[1] = '\0';
 	insert(index, in_str);
 }
 
-void String::erase(int index, int count)
+void MyString::erase(int index, int count)
 {
 	int actual = std::min(count, length() - index);
 	for (int i = index; i < size_ - actual; i++)
@@ -163,19 +164,19 @@ void String::erase(int index, int count)
 	size_ = size_ - actual;
 }
 
-int String::compare(const String &string) const
+int MyString::compare(const MyString &string) const
 {
 	return strcmp(data_, string.data_);
 }
 
-int String::compare(const char *cstr) const
+int MyString::compare(const char *cstr) const
 {
 	return strcmp(data_, cstr);
 }
 
-String String::operator+(const String &string) const
+MyString MyString::operator+(const MyString &string) const
 {
-	String res;
+	MyString res;
 	res.reserve(size_ + string.length());
 	strncpy(res.data_, data_, size_);
 	strncpy(res.data_ + size_ - 1, string.data_, string.size_);
@@ -183,7 +184,7 @@ String String::operator+(const String &string) const
 	return res;
 }
 
-String &String::operator+=(const String &string)
+MyString &MyString::operator+=(const MyString &string)
 {
 	reserve(size_ + string.length());
 	strncpy(data_ + size_ - 1, string.data_, string.size_);
@@ -191,66 +192,66 @@ String &String::operator+=(const String &string)
 	return *this;
 }
 
-bool String::operator<(const String &string) const
+bool MyString::operator<(const MyString &string) const
 {
 	return compare(string) < 0;
 }
 
-bool String::operator>(const String &string) const
+bool MyString::operator>(const MyString &string) const
 {
 	return compare(string) > 0;
 }
 
-bool String::operator==(const String &string) const
+bool MyString::operator==(const MyString &string) const
 {
 	return compare(string) == 0;
 }
 
-bool String::operator!=(const String &string) const
+bool MyString::operator!=(const MyString &string) const
 {
 	return compare(string) != 0;
 }
 
-bool String::operator<(const char *cstr) const
+bool MyString::operator<(const char *cstr) const
 {
 	return compare(cstr) < 0;
 }
 
-bool String::operator>(const char *cstr) const
+bool MyString::operator>(const char *cstr) const
 {
 	return compare(cstr) > 0;
 }
 
-bool String::operator==(const char *cstr) const
+bool MyString::operator==(const char *cstr) const
 {
 	return compare(cstr) == 0;
 }
 
-bool String::operator!=(const char *cstr) const
+bool MyString::operator!=(const char *cstr) const
 {
 	return compare(cstr) != 0;
 }
 
-bool operator<(const char *lhs, const String &rhs)
+bool operator<(const char *lhs, const MyString &rhs)
 {
 	return rhs > lhs;
 }
 
-bool operator>(const char *lhs, const String &rhs)
+bool operator>(const char *lhs, const MyString &rhs)
 {
 	return rhs < lhs;
 }
 
-bool operator==(const char *lhs, const String &rhs)
+bool operator==(const char *lhs, const MyString &rhs)
 {
 	return rhs == lhs;
 }
 
-bool operator!=(const char *lhs, const String &rhs)
+bool operator!=(const char *lhs, const MyString &rhs)
 {
 	return rhs != lhs;
 }
-long long stoll(String &string)
+long long stoll(MyString &string)
 {
 	long long res = 0;
 	for (int i = string.capacity_; i >= 0; i--)
@@ -260,7 +261,7 @@ long long stoll(String &string)
 	return res;
 }
 
-long long stoll(const String &string)
+long long stoll(const MyString &string)
 {
 	long long res = 0;
 	for (int i = string.capacity_; i >= 0; i--)
@@ -269,7 +270,7 @@ long long stoll(const String &string)
 	}
 	return res;
 }
-std::ostream &operator<<(std::ostream &out, const String &str)
+std::ostream &operator<<(std::ostream &out, const MyString &str)
 {
 	for (int i = 0; i < str.size_ - 1; i++)
 	{
@@ -284,21 +285,21 @@ std::ostream &operator<<(std::ostream &out, const String &str)
 	}
 	return out;
 }
-void String::insert(int index, const char *cstr, int count)
+void MyString::insert(int index, const char *cstr, int count)
 {
-	String in_str(cstr);
+	MyString in_str(cstr);
 	in_str.size_ = count + 1;
 	in_str.data_[count] = '\0';
 	insert(index, in_str);
 }
 
-String String::substr(int pos) const
+MyString MyString::substr(int pos) const
 {
 	if (pos < 0)
 	{
 		throw std::runtime_error("Error: position is less the zero.");
 	}
-	String res;
+	MyString res;
 	for (int i = pos; i < length(); i++)
 	{
 		res.push_back(data_[i]);
@@ -306,13 +307,13 @@ String String::substr(int pos) const
 	return res;
 }
 
-String String::substr(size_t pos, size_t len) const
+MyString MyString::substr(size_t pos, size_t len) const
 {
 	if (pos < 0 || len < 0)
 	{
 		throw std::runtime_error("Error: position or len is less the zero.");
 	}
-	String res;
+	MyString res;
 	for (size_t i = pos; i < pos + len; i++)
 	{
 		res.push_back(data_[i]);
@@ -320,7 +321,7 @@ String String::substr(size_t pos, size_t len) const
 	return res;
 }
 
-void String::append(int n, char ch)
+void MyString::append(int n, char ch)
 {
 	for (int i = 0; i < n; i++)
 	{

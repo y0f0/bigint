@@ -1,11 +1,11 @@
 #include "LN.h"
 
-#include "String.h"
+#include "MyString.h"
 
 #include <climits>
 #include <new>
 
-void LN::remove_leading_zero(String& str)	 // should be in util, but didn't work
+void LN::remove_leading_zero(MyString& str)	 // should be in util, but didn't work
 {
 	size_t i;
 	for (i = 0; i < str.size(); i++)
@@ -14,7 +14,7 @@ void LN::remove_leading_zero(String& str)	 // should be in util, but didn't work
 
 	if (i == str.size())
 	{
-		str = String("0");
+		str = MyString("0");
 	}
 	else
 	{
@@ -55,12 +55,12 @@ LN& LN::operator=(LN&& tmp) noexcept	// assignment move
 	return *this;
 }
 
-LN::LN(const std::string_view& sv) : LN{ String(sv.data()) }
+LN::LN(const std::string_view& sv) : LN{ MyString(sv.data()) }
 {
 	isNan = sv == "NaN";
 }
 
-LN::LN(const String& s)
+LN::LN(const MyString& s)
 {
 	if (s == "NaN")
 	{
@@ -84,7 +84,7 @@ LN::LN(const String& s)
 
 	if (i == s.length())
 	{
-		number = String("0");
+		number = MyString("0");
 	}
 	else
 	{
@@ -186,7 +186,7 @@ LN LN::operator/(const LN& num) const
 	}
 	else
 	{
-		result.number = String("");
+		result.number = MyString("");
 		LN part, part_total, remainder;
 		size_t count = 0;
 		remainder.number = numerator.number.substr(count, denominator.number.size() - 1);
@@ -198,7 +198,7 @@ LN LN::operator/(const LN& num) const
 			count++;
 			while (part < denominator)
 			{
-				result.number += String("0");
+				result.number += MyString("0");
 				if (count < numerator.number.size())
 				{
 					part.number.append(1, numerator.number[count]);
@@ -209,7 +209,7 @@ LN LN::operator/(const LN& num) const
 			}
 			if (part == denominator)
 			{
-				result.number += String("1");
+				result.number += MyString("1");
 				remainder = LN(0LL);
 			}
 			else if (part > denominator)

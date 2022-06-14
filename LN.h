@@ -1,6 +1,6 @@
 #pragma once
 
-#include "String.h"
+#include "MyString.h"
 #include "util.h"
 
 #include <iostream>
@@ -10,7 +10,7 @@
 class LN
 {
   private:
-	String number;
+	MyString number;
 	char sign;
 	bool isNan;
 
@@ -19,11 +19,11 @@ class LN
 	static LN ZERO() { return LN(0LL); }
 	static LN ONE() { return LN(1LL); }
 	static LN MINUS_ONE() { return LN(-1LL); }
-	static LN NaN() { return { String("NaN"), '+', true }; }
+	static LN NaN() { return { MyString("NaN"), '+', true }; }
 
 	static LN abs(const LN& ln) { return ln < 0 ? LN(-1LL) * ln : ln; }
 	static LN abs(LN& ln) { return ln < 0 ? LN(-1LL) * ln : ln; }
-	static void remove_leading_zero(String& str);
+	static void remove_leading_zero(MyString& str);
 	[[nodiscard]] static util::pair< LN, LN > divide(const LN& dividend, const LN& divisor);
 
   public:
@@ -31,7 +31,7 @@ class LN
 	LN& operator--();
 	LN operator--(int);
 
-	LN(String number, char sign, bool naNable) :
+	LN(MyString number, char sign, bool naNable) :
 		number{ std::move(number) }, sign{ sign }, isNan{ naNable } {}				 // copy constructor
 	LN(const LN& ln) : number{ ln.number }, sign{ ln.sign }, isNan{ ln.isNan } {}	 // copy constructor
 	explicit LN(const long long& ll = 0) :
@@ -39,8 +39,8 @@ class LN
 	{
 	}
 	explicit LN(const std::string_view& sv);
-	explicit LN(const String& s);
-	explicit LN(const char* cstring) : LN{ String(cstring) } {}
+	explicit LN(const MyString& s);
+	explicit LN(const char* cstring) : LN{ MyString(cstring) } {}
 	LN(LN&& ln) noexcept : number(std::move(ln.number)), sign(ln.sign), isNan(ln.isNan) {}	  // move constructor
 	LN& operator=(const LN&);																  // assignment copy
 	LN& operator=(LN&& tmp) noexcept;														  // assignment move

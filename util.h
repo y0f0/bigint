@@ -1,14 +1,14 @@
 #pragma once
 
-#include "String.h"
+#include "MyString.h"
 
 namespace util
 {
-	bool is_10_degree(const String&);
-	String add(String, String);
-	String subtract(String, String);
-	String multiply(String, String);
-	String to_String(long long n);
+	bool is_10_degree(const MyString&);
+	MyString add(MyString, MyString);
+	MyString subtract(MyString, MyString);
+	MyString multiply(MyString, MyString);
+	MyString to_String(long long n);
 	template< typename T1, typename T2 >
 	struct pair
 	{
