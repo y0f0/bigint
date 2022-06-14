@@ -48,7 +48,7 @@ namespace operations
 		{ "_",
 		  [](const LN& x) -> LN
 		  {
-			  return LN::operator_(x);
+			  return -x;
 		  } },
 	};
 

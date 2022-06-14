@@ -36,7 +36,7 @@ class LN
 	LN operator/=(const LN& ln);
 	LN operator%=(const LN& ln);
 
-	static LN operator_(const LN& ln) { return ln * MINUS_ONE(); }
+	LN operator-() const { return MINUS_ONE() * *this; }
 
 	bool operator<(const LN& ln) const { return !anyIsNaN(*this, ln) && comparing(*this, ln) < 0; }
 	bool operator<=(const LN& ln) const { return !anyIsNaN(*this, ln) && comparing(*this, ln) <= 0; }
