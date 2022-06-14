@@ -36,12 +36,12 @@ class LN
 	LN operator/=(const LN& ln);
 	LN operator%=(const LN& ln);
 
-	bool operator<(const LN&) const;
-	bool operator<=(const LN& ln) const { return !anyIsNaN(*this, ln) && (*this == ln || *this < ln); }
-	bool operator>(const LN& ln) const { return !anyIsNaN(*this, ln) && !((*this < ln) || (*this == ln)); }
-	bool operator>=(const LN& ln) const { return !anyIsNaN(*this, ln) && (*this == ln || *this > ln); }
-	bool operator==(const LN& ln) const { return !anyIsNaN(*this, ln) && (sign == ln.sign && number == ln.number); }
-	bool operator!=(const LN& ln) const { return anyIsNaN(*this, ln) || sign != ln.sign || number != ln.number; }
+	bool operator<(const LN& ln) const { return !anyIsNaN(*this, ln) && comparing(*this, ln) < 0; }
+	bool operator<=(const LN& ln) const { return !anyIsNaN(*this, ln) && comparing(*this, ln) <= 0; }
+	bool operator>(const LN& ln) const { return !anyIsNaN(*this, ln) && comparing(*this, ln) > 0; }
+	bool operator>=(const LN& ln) const { return !anyIsNaN(*this, ln) && comparing(*this, ln) >= 0; }
+	bool operator==(const LN& ln) const { return !anyIsNaN(*this, ln) && comparing(*this, ln) == 0; }
+	bool operator!=(const LN& ln) const { return anyIsNaN(*this, ln) || comparing(*this, ln) != 0; }
 
 	bool operator<(const long long& ll) const { return *this < LN(ll); }
 	bool operator<=(const long long& ll) const { return !(*this > LN(ll)); }
@@ -54,6 +54,8 @@ class LN
 	LN operator++(int);
 	LN& operator--();
 	LN operator--(int);
+
+	friend int comparing(const LN& lhs, const LN& rhs);
 
 	friend std::ostream& operator<<(std::ostream&, const LN&);
 

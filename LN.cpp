@@ -238,27 +238,6 @@ LN LN::operator%(const LN& num) const
 	return *this - ((*this / num) * num);
 }
 
-bool LN::operator<(const LN& ln) const
-{
-	if (this->isNan || ln.isNan)
-	{
-		return false;
-	}
-	if (ln.sign == sign)
-	{
-		if (sign == '+')
-		{
-			if (number.length() == ln.number.length())
-			{
-				return number < ln.number;
-			}
-			return number.length() < ln.number.length();
-		}
-		return LN(-1LL) * (*this) > LN(-1LL) * ln;
-	}
-	return sign == '-';
-}
-
 LN LN::operator~() const
 {
 	if (this->isNan || *this < 0)
@@ -403,4 +382,25 @@ LN LN::operator--(int)
 	*this -= LN(1LL);
 
 	return temp;
+}
+
+int comparing(const LN& lhs, const LN& rhs)
+{
+	if (lhs.sign == rhs.sign && lhs.number == rhs.number)
+	{
+		return 0;
+	}
+	if (lhs.sign == rhs.sign)
+	{
+		if (lhs.sign == '+')
+		{
+			if (lhs.number.length() == rhs.number.length())
+			{
+				return lhs.number < rhs.number ? -1 : 1;
+			}
+			return lhs.number.length() < rhs.number.length() ? -1 : 1;
+		}
+		return LN(-1LL) * lhs > LN(-1LL) * rhs ? -1 : 1;
+	}
+	return lhs.sign == '-' ? -1 : 1;
 }
