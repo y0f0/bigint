@@ -126,10 +126,7 @@ int solve(std::istream& in, std::ostream& out)	  // encapsulation for testing
 		} catch (std::bad_alloc const &)
 		{
 			return ERROR_NOT_ENOUGH_MEMORY;
-		} catch (const char* exception)
-		{
-			return ERROR_NOT_ENOUGH_MEMORY;
-		} catch (std::exception const &)
+		} catch (...)
 		{
 			return ERROR_UNKNOWN;
 		}

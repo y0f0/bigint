@@ -19,16 +19,10 @@ int main(int argc, char* args[])
 		return ERROR_FILE_EXISTS;
 	}
 
-	try
+	int ret = solve(in, out);
+	if (ret != ERROR_SUCCESS)
 	{
-		int ret = solve(in, out);
-		if (ret != ERROR_SUCCESS)
-		{
-			return ret;
-		}
-	} catch (...)
-	{
-		return ERROR_UNKNOWN;
+		return ret;
 	}
 
 	return ERROR_SUCCESS;

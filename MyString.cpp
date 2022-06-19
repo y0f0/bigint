@@ -297,10 +297,6 @@ void MyString::insert(int index, const char *cstr, int count)
 
 MyString MyString::substr(int pos) const
 {
-	if (pos < 0)
-	{
-		throw std::runtime_error("Error: position is less the zero.");
-	}
 	MyString res;
 	for (int i = pos; i < length(); i++)
 	{
@@ -311,10 +307,6 @@ MyString MyString::substr(int pos) const
 
 MyString MyString::substr(size_t pos, size_t len) const
 {
-	if (pos < 0 || len < 0)
-	{
-		throw std::runtime_error("Error: position or len is less the zero.");
-	}
 	MyString res;
 	for (size_t i = pos; i < pos + len; i++)
 	{
