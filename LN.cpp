@@ -171,57 +171,42 @@ LN LN::operator/(const LN& num) const
 		return MINUS_ONE() * (*this);
 
 	LN result;
-	if (numerator <= LN(LLONG_MAX) and denominator <= LN(LLONG_MAX))
+	result.number = MyString("");
+	LN part, part_total, remainder;
+	size_t count = 0;
+	remainder.number = numerator.number.substr(count, denominator.number.size() - 1);
+	count = denominator.number.size() - 1;
+	while (count < numerator.number.size())
 	{
-		long long quotientLL = stoll(numerator.number) / stoll(denominator.number);
-		result = LN(quotientLL);
-	}
-	else if (numerator == denominator)
-	{
-		result = ONE();
-	}
-	else if (util::is_10_degree(denominator.number))	// 10's optimizers
-	{
-		result.number = numerator.number.substr(0, numerator.number.size() - denominator.number.size() + 1);
-	}
-	else
-	{
-		result.number = MyString("");
-		LN part, part_total, remainder;
-		size_t count = 0;
-		remainder.number = numerator.number.substr(count, denominator.number.size() - 1);
-		count = denominator.number.size() - 1;
-		while (count < numerator.number.size())
+		remainder.number.append(1, numerator.number[count]);
+		part.number = remainder.number;
+		count++;
+		while (part < denominator)
 		{
-			remainder.number.append(1, numerator.number[count]);
-			part.number = remainder.number;
-			count++;
-			while (part < denominator)
+			result.number += MyString("0");
+			if (count < numerator.number.size())
 			{
-				result.number += MyString("0");
-				if (count < numerator.number.size())
-				{
-					part.number.append(1, numerator.number[count]);
-					count++;
-				}
-				else
-					break;
+				part.number.append(1, numerator.number[count]);
+				count++;
 			}
-			if (part == denominator)
-			{
-				result.number += MyString("1");
-				remainder = ZERO();
-			}
-			else if (part > denominator)
-			{
-				remove_leading_zero(part.number);
-				auto p = divide(part, denominator);
-				part_total = p.first;
-				remainder = p.second;
-				result.number = result.number + part_total.number;
-			}
+			else
+				break;
+		}
+		if (part == denominator)
+		{
+			result.number += MyString("1");
+			remainder = ZERO();
+		}
+		else if (part > denominator)
+		{
+			remove_leading_zero(part.number);
+			auto p = divide(part, denominator);
+			part_total = p.first;
+			remainder = p.second;
+			result.number = result.number + part_total.number;
 		}
 	}
+	//	}
 	remove_leading_zero(result.number);
 
 	result.sign = this->sign == num.sign ? '+' : '-';
@@ -230,11 +215,29 @@ LN LN::operator/(const LN& num) const
 
 LN LN::operator%(const LN& num) const
 {
-	if (this->isNan || num.isNan)
+	if (this->isNan || num.isNan || num == ZERO())
 	{
 		return NaN();
 	}
-	return *this - ((*this / num) * num);
+	if (*this == ZERO())
+	{
+		return ZERO();
+	}
+	if (*this > ZERO() && num > ZERO())
+	{
+		return *this - ((*this / num) * num);
+	}
+	if (*this < ZERO() && num < ZERO())
+	{
+		return -(-*this - ((-*this / -num) * -num));
+	}
+	if (*this > ZERO() && num < ZERO())
+	{
+		LN div_up = (*this + (-num - ONE())) / -num;
+		return *this - (-div_up * num);
+	}
+	LN div_up = (*this + (-num - ONE())) / -num;
+	return *this - (-div_up * num);
 }
 
 LN LN::operator~() const
