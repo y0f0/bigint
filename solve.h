@@ -118,8 +118,7 @@ int solve(std::istream& in, std::ostream& out)	  // encapsulation for testing
 				data.pop();
 				out << operations::boolean[line](y, x) << '\n';
 			}
-			else if (line != "+" && line != "-" && line != "*" && line != "/" && line != "%" && line != "~" && line != "_" &&
-					 line != "<" && line != "<=" && line != ">" && line != ">=" && line != "==" && line != "!=")
+			else
 			{
 				data.push(LN(std::string_view{ line }));
 			}
