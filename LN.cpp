@@ -253,21 +253,24 @@ LN LN::operator~() const
 	else if (*this < 16)
 		return LN(3LL);
 
-	LN left = ZERO();
-	LN middle;
-	LN right = *this + ONE();
-
-	while (left != right - ONE())
+	LN two(2LL);
+	LN prev = *this / two;
+	if (prev != ZERO())
 	{
-		middle = (left + right) / LN(2LL);
+		LN current = (prev + *this / prev) / two;
 
-		if (middle * middle <= *this)
-			left = middle;
-		else
-			right = middle;
+		while (current < prev)
+		{
+			prev = current;
+			current = (prev + *this / prev) / two;
+		}
+
+		return prev;
 	}
-
-	return left;
+	else
+	{
+		return *this;
+	}
 }
 
 std::ostream& operator<<(std::ostream& out, const LN& ln)
