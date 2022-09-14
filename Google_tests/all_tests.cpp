@@ -1,0 +1,12 @@
+#include "../solve.h"
+#include "tests_addition/tests_addition.h"
+#include "tests_division/tests_division.h"
+#include "tests_from_problem_text/tests_from_problem_text.h"
+#include "tests_modulo/tests_sqrt.h"
+#include "tests_multiplication/tests_multiplitcation.h"
+#include "tests_nan/tests_nan.h"
+#include "tests_subtraction/tests_subtraction.h"
+#include "tests_sqrt/tests_sqrt.h"
+#include "tests_comparison_operators/tests_comparison_operators.h"
+
+#include "gtest/gtest.h"

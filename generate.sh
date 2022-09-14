@@ -1,0 +1,16 @@
+cd /Users/nikita/itmo/sem-4/cpp/cpp2_Attempt2_with_tests/Google_tests/tests_subtraction/
+python3 main.py
+cd /Users/nikita/itmo/sem-4/cpp/cpp2_Attempt2_with_tests/Google_tests/tests_addition/
+python3 main.py
+cd /Users/nikita/itmo/sem-4/cpp/cpp2_Attempt2_with_tests/Google_tests/tests_addition/
+python3 main.py
+cd /Users/nikita/itmo/sem-4/cpp/cpp2_Attempt2_with_tests/Google_tests/tests_division/
+python3 main.py
+cd /Users/nikita/itmo/sem-4/cpp/cpp2_Attempt2_with_tests/Google_tests/tests_division/
+python3 main.py
+cd /Users/nikita/itmo/sem-4/cpp/cpp2_Attempt2_with_tests/Google_tests/tests_modulo/
+python3 main.py
+cd /Users/nikita/itmo/sem-4/cpp/cpp2_Attempt2_with_tests/Google_tests/tests_comparison_operators/
+python3 main.py
+cd /Users/nikita/itmo/sem-4/cpp/cpp2_Attempt2_with_tests/Google_tests/tests_sqrt/
+python3 main.py
